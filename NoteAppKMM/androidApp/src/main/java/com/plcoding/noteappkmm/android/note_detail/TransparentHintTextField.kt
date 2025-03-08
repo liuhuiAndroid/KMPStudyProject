@@ -11,6 +11,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 
+// 带有透明背景的文本输入框，并支持提示文本（Hint）的显示/隐藏
 @Composable
 fun TransparentHintTextField(
     text: String,
@@ -23,8 +24,7 @@ fun TransparentHintTextField(
     onFocusChanged: (FocusState) -> Unit
 ) {
     Box(modifier = modifier) {
-        BasicTextField(
-            value = text,
+        BasicTextField(value = text,
             onValueChange = onValueChanged,
             singleLine = singleLine,
             textStyle = textStyle,
@@ -32,13 +32,10 @@ fun TransparentHintTextField(
                 .fillMaxWidth()
                 .onFocusChanged { state ->
                     onFocusChanged(state)
-                }
-        )
-        if(isHintVisible) {
+                })
+        if (isHintVisible) {
             Text(
-                text = hint,
-                style = textStyle,
-                color = Color.DarkGray
+                text = hint, style = textStyle, color = Color.DarkGray
             )
         }
     }

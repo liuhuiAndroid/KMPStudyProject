@@ -12,14 +12,14 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
+@Module // Hilt 模块
+@InstallIn(SingletonComponent::class)   // 应用级别的单例
 object AppModule {
 
-    @Provides
-    @Singleton
-    fun provideSqlDriver(app: Application): SqlDriver {
-        return DatabaseDriverFactory(app).createDriver()
+    @Provides   // 依赖提供方法
+    @Singleton  // 只会有一个实例
+    fun provideSqlDriver(application: Application): SqlDriver {
+        return DatabaseDriverFactory(application).createDriver()
     }
 
     @Provides

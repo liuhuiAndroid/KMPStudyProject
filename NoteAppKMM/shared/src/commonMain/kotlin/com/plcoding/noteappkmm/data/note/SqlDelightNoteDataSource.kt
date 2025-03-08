@@ -5,9 +5,10 @@ import com.plcoding.noteappkmm.domain.note.Note
 import com.plcoding.noteappkmm.domain.note.NoteDataSource
 import com.plcoding.noteappkmm.domain.time.DateTimeUtil
 
-class SqlDelightNoteDataSource(db: NoteDatabase): NoteDataSource {
+class SqlDelightNoteDataSource(database: NoteDatabase) : NoteDataSource {
 
-    private val queries = db.noteQueries
+    // 数据库查询对象
+    private val queries = database.noteQueries
 
     override suspend fun insertNote(note: Note) {
         queries.insertNote(

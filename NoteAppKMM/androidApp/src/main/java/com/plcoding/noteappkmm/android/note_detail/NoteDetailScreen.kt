@@ -21,33 +21,28 @@ import androidx.navigation.NavController
 
 @Composable
 fun NoteDetailScreen(
-    noteId: Long,
-    navController: NavController,
-    viewModel: NoteDetailViewModel = hiltViewModel()
+    noteId: Long, navController: NavController, viewModel: NoteDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val hasNoteBeenSaved by viewModel.hasNoteBeenSaved.collectAsState()
 
     LaunchedEffect(key1 = hasNoteBeenSaved) {
-        if(hasNoteBeenSaved) {
+        if (hasNoteBeenSaved) {
             navController.popBackStack()
         }
     }
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = viewModel::saveNote,
-                backgroundColor = Color.Black
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = "Save note",
-                    tint = Color.White
-                )
-            }
+    Scaffold(floatingActionButton = {
+        FloatingActionButton(
+            onClick = viewModel::saveNote, backgroundColor = Color.Black
+        ) {
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = "Save note",
+                tint = Color.White
+            )
         }
-    ) { padding ->
+    }) { padding ->
         Column(
             modifier = Modifier
                 .background(Color(state.noteColor))
