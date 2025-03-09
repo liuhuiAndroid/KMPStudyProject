@@ -12,8 +12,7 @@ fun NoteEntity.toNote(): Note {
         title = title,
         content = content,
         colorHex = colorHex,
-        created = Instant
-            .fromEpochMilliseconds(created)
+        created = Instant.fromEpochMilliseconds(created)
             .toLocalDateTime(TimeZone.currentSystemDefault())
     )
 }

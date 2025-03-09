@@ -30,9 +30,7 @@ fun HideableSearchTextField(
 ) {
     Box(modifier = modifier) {
         AnimatedVisibility(
-            visible = isSearchActive,
-            enter = fadeIn(),
-            exit = fadeOut()
+            visible = isSearchActive, enter = fadeIn(), exit = fadeOut()
         ) {
             OutlinedTextField(
                 value = text,
@@ -53,8 +51,7 @@ fun HideableSearchTextField(
         ) {
             IconButton(onClick = onCloseClick) {
                 Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close search"
+                    imageVector = Icons.Default.Close, contentDescription = "Close search"
                 )
             }
         }
@@ -66,8 +63,7 @@ fun HideableSearchTextField(
         ) {
             IconButton(onClick = onSearchClick) {
                 Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = "Open search"
+                    imageVector = Icons.Default.Search, contentDescription = "Open search"
                 )
             }
         }

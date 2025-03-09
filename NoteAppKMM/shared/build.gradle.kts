@@ -6,11 +6,9 @@ plugins {
 
 kotlin {
     android()
-    
+
     listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
+        iosX64(), iosArm64(), iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
             baseName = "shared"
@@ -21,7 +19,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("com.squareup.sqldelight:runtime:1.5.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
             }
         }
         val commonTest by getting {

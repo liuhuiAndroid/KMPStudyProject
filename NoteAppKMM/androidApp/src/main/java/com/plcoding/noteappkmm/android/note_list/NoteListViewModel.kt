@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.noteappkmm.domain.note.Note
 import com.plcoding.noteappkmm.domain.note.NoteDataSource
 import com.plcoding.noteappkmm.domain.note.SearchNotes
-import com.plcoding.noteappkmm.domain.time.DateTimeUtil
-import com.plcoding.noteappkmm.presentation.RedOrangeHex
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -17,9 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteListViewModel @Inject constructor(
-    private val noteDataSource: NoteDataSource,
-    private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+    private val noteDataSource: NoteDataSource, private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private val searchNotes = SearchNotes()
 
@@ -47,7 +44,7 @@ class NoteListViewModel @Inject constructor(
 
     fun onToggleSearch() {
         savedStateHandle["isSearchActive"] = !isSearchActive.value
-        if(!isSearchActive.value) {
+        if (!isSearchActive.value) {
             savedStateHandle["searchText"] = ""
         }
     }

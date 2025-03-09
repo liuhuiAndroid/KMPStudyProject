@@ -29,8 +29,7 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteListScreen(
-    navController: NavController,
-    viewModel: NoteListViewModel = hiltViewModel()
+    navController: NavController, viewModel: NoteListViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -38,30 +37,26 @@ fun NoteListScreen(
         viewModel.loadNotes()
     }
 
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate("note_detail/-1L")
-                },
-                backgroundColor = Color.Black
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add note",
-                    tint = Color.White
-                )
-            }
+    Scaffold(floatingActionButton = {
+        FloatingActionButton(
+            onClick = {
+                navController.navigate("note_detail/-1L")
+            }, backgroundColor = Color.Black
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add note",
+                tint = Color.White
+            )
         }
-    ) { padding ->
+    }) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
             ) {
                 HideableSearchTextField(
                     text = state.searchText,
@@ -74,37 +69,25 @@ fun NoteListScreen(
                         .height(90.dp)
                 )
                 this@Column.AnimatedVisibility(
-                    visible = !state.isSearchActive,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    visible = !state.isSearchActive, enter = fadeIn(), exit = fadeOut()
                 ) {
                     Text(
-                        text = "All notes",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp
+                        text = "All notes", fontWeight = FontWeight.Bold, fontSize = 30.sp
                     )
                 }
             }
             LazyColumn(
                 modifier = Modifier.weight(1f)
             ) {
-                items(
-                    items = state.notes,
-                    key = { it.id!! }
-                ) { note ->
-                    NoteItem(
-                        note = note,
-                        backgroundColor = Color(note.colorHex),
-                        onNoteClick = {
-                            navController.navigate("note_detail/${note.id}")
-                        },
-                        onDeleteClick = {
-                            viewModel.deleteNoteById(note.id!!)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                            .animateItemPlacement()
+                items(items = state.notes, key = { it.id!! }) { note ->
+                    NoteItem(note = note, backgroundColor = Color(note.colorHex), onNoteClick = {
+                        navController.navigate("note_detail/${note.id}")
+                    }, onDeleteClick = {
+                        viewModel.deleteNoteById(note.id!!)
+                    }, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                        .animateItemPlacement()
                     )
                 }
             }

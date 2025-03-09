@@ -21,17 +21,11 @@ class SqlDelightNoteDataSource(database: NoteDatabase) : NoteDataSource {
     }
 
     override suspend fun getNoteById(id: Long): Note? {
-        return queries
-            .getNoteById(id)
-            .executeAsOneOrNull()
-            ?.toNote()
+        return queries.getNoteById(id).executeAsOneOrNull()?.toNote()
     }
 
     override suspend fun getAllNotes(): List<Note> {
-        return queries
-            .getAllNotes()
-            .executeAsList()
-            .map { it.toNote() }
+        return queries.getAllNotes().executeAsList().map { it.toNote() }
     }
 
     override suspend fun deleteNoteById(id: Long) {
