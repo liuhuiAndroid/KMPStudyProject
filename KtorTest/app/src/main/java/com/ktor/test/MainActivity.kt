@@ -20,6 +20,7 @@ import com.ktor.test.ui.theme.KtorTestTheme
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -27,8 +28,10 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -39,6 +42,7 @@ import kotlinx.serialization.json.Json
 
 /**
  * Ktor网络框架源码分析 https://juejin.cn/post/7396930610537168947
+ * Kotlin Ktor Android Client   https://www.simplifiedcoding.net/kotlin-ktor-android-client/
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,15 +60,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+private const val NETWORK_TIME_OUT = 30_000L
+
 private val httpClient: HttpClient by lazy {
     HttpClient(OkHttp.create()) {
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true })     // 忽略未知字段，避免解析错误
         }
         install(HttpTimeout) {
-            socketTimeoutMillis = 30_000L       // 设置 socket 超时时间
-            requestTimeoutMillis = 30_000L      // 设置请求超时时间
-            connectTimeoutMillis = 30_000L      // 设置请求超时时间
+            socketTimeoutMillis = NETWORK_TIME_OUT       // 设置 socket 超时时间
+            requestTimeoutMillis = NETWORK_TIME_OUT      // 设置请求超时时间
+            connectTimeoutMillis = NETWORK_TIME_OUT      // 设置请求超时时间
         }
         // 启用日志功能
         install(Logging) {
@@ -81,6 +87,11 @@ private val httpClient: HttpClient by lazy {
 //                    refreshTokens {  }
 //                }
 //            }
+
+        install(DefaultRequest) {
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+        }
+
         // 设置所有请求的默认配置
         defaultRequest {
             contentType(ContentType.Application.Json)
