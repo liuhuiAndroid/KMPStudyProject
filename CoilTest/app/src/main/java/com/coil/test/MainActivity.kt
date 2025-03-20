@@ -1,6 +1,7 @@
 package com.coil.test
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,9 +35,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.coil.test.ui.theme.CoilTestTheme
 
+/**
+ * https://juejin.cn/post/7403546034763235378
+ * https://juejin.cn/post/7482949461564620811
+ */
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,6 +75,25 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         AsyncImage(
             model = imageUrl,
             contentDescription = imageDescription,
+        )
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(imageUrl)
+                .crossfade(true)    // 淡入淡出动画效果
+                .build(),
+            contentDescription = imageDescription,
+            contentScale = ContentScale.Crop,
+            placeholder = painterResource(R.drawable.book_error_2),
+            error = painterResource(R.drawable.book_error_2),
+            onLoading = {
+                Log.i("MainActivity", "imageUrl onLoading")
+            },
+            onSuccess = {
+                Log.i("MainActivity", "imageUrl onSuccess")
+            },
+            onError = {
+                Log.i("MainActivity", "imageUrl onError")
+            },
         )
         // 更加灵活和精细的 UI 控制，也可以直接使用 AsyncImage
         Box(
