@@ -34,42 +34,38 @@ class MainActivity : ComponentActivity() {
             context = appContext,
             FavoriteBookDatabase::class.java,
             name = FavoriteBookDatabase.DB_NAME // 跨平台项目推荐使用绝对路径
-        )
-            .fallbackToDestructiveMigration()
+        ).fallbackToDestructiveMigration() // 当数据库版本发生变化且没有提供适当的迁移策略时，直接销毁（删除）旧数据库并创建一个新的数据库。适用于开发阶段
+            // 如果数据库升级涉及复杂的表结构变更，建议使用 .addMigrations(...) 而不是 .fallbackToDestructiveMigration()，以避免用户数据丢失。
             .build()
 
         setContent {
             RoomTestTheme {
-                val coroutineScope = rememberCoroutineScope()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val viewModel = MainViewModel(bookDatabase)
-                    val books by viewModel.favoriteBooks.collectAsState(initial = emptyList())
-
                     Column {
+                        val coroutineScope = rememberCoroutineScope()
                         Button(
                             onClick = {
                                 coroutineScope.launch {
                                     withContext(Dispatchers.IO) {
-                                        val id1 = bookDatabase.favoriteBookDao.insert(
+                                        val id1 = bookDatabase.favoriteBookDao.upsert(
                                             BookEntity(
-                                                "1",
-                                                "Hello World"
+                                                "1", "Hello World"
                                             )
                                         )
-                                        val id2 = bookDatabase.favoriteBookDao.insert(
+                                        val id2 = bookDatabase.favoriteBookDao.upsert(
                                             BookEntity(
-                                                "2",
-                                                "Hello World2"
+                                                "2", "Hello World2"
                                             )
                                         )
                                         Log.i("MainActivity", "id1: $id1, id2: $id2")
                                     }
                                 }
-                            },
-                            modifier = Modifier.padding(innerPadding)
+                            }, modifier = Modifier.padding(innerPadding)
                         ) {
                             Text(text = "Hello World")
                         }
+                        val viewModel = MainViewModel(bookDatabase)
+                        val books by viewModel.favoriteBooks.collectAsState(initial = emptyList())
                         books.forEach { book ->
                             Text(text = "Book: ${book.title}")
                         }

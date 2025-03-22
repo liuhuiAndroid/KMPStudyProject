@@ -2,6 +2,6 @@ package com.room.test
 
 import androidx.lifecycle.ViewModel
 
-class MainViewModel(private val bookDatabase: FavoriteBookDatabase) : ViewModel() {
+class MainViewModel(bookDatabase: FavoriteBookDatabase) : ViewModel() {
     val favoriteBooks = bookDatabase.favoriteBookDao.getFavoriteBooks()
 }
