@@ -39,9 +39,18 @@ https://www.youtube.com/playlist?list=PLQkwcJG4YTCQcFEPuYGuv54nYai_lwil_
 https://www.youtube.com/playlist?list=PLQkwcJG4YTCQHCppNAQmLsj_jW38rU9sC
 ```
 
-
-
 Kotlin
 
 1. sealed interface
+
+Kotlin Multiplatform
+
+1. Kotlin Multiplatform Plugin
+
+2. kdoctor
+
+3. https://kmp.jetbrains.com/
+
+4. 
+
 
