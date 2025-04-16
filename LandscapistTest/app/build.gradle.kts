@@ -58,6 +58,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.landscapist.glide)
-    implementation(libs.landscapist.animation)
     implementation(libs.landscapist.placeholder)
+    implementation(libs.landscapist.animation)
+    implementation(libs.landscapist.transformation)
+    implementation(libs.landscapist.palette)
 }

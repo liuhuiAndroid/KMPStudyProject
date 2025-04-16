@@ -12,16 +12,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import com.landscapist.test.ui.theme.LandscapistTestTheme
 import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
+import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.glide.GlideImage
+import com.skydoves.landscapist.placeholder.shimmer.Shimmer
+import com.skydoves.landscapist.placeholder.shimmer.ShimmerPlugin
+import com.skydoves.landscapist.placeholder.thumbnail.ThumbnailPlugin
 
 /**
  * https://github.com/skydoves/landscapist
  */
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,11 +57,25 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = modifier
         )
         GlideImage(
-            imageModel = { imageUrl }, // loading a network image using an URL.
+            imageModel = { imageUrl },
             imageOptions = ImageOptions(
                 contentScale = ContentScale.Crop,
-                alignment = Alignment.Center
-            )
+                alignment = Alignment.Center,
+                contentDescription = "girl image",
+                requestSize = IntSize(800, 600)
+            ),
+            component = rememberImageComponent {
+                +ShimmerPlugin(
+                    Shimmer.Flash(
+                        baseColor = Color.White,
+                        highlightColor = Color.LightGray,
+                    ),
+                )
+                +ThumbnailPlugin()
+                +CircularRevealPlugin(
+                    duration = 2000
+                )
+            },
         )
     }
 }
