@@ -220,6 +220,8 @@ CompositionLocalProvider(LocalGlideRequestOptions provides requestOptions) {
 
 Add the dependency below to your **module**'s `build.gradle` file:
 
+将以下依赖项添加到你的**模块**的 `build.gradle` 文件中：
+
 ```gradle
 dependencies {
     implementation("com.github.skydoves:landscapist-coil:$version")
@@ -227,6 +229,8 @@ dependencies {
 ```
 
 If you're targeting on Kotlin Multiplatform, add the dependency below to your module's `build.gradle.kts` file:
+
+如果你正在使用 Kotlin Multiplatform 进行开发，请将以下依赖项添加到你的模块的 `build.gradle.kts` 文件中：
 
 ```kotlin
 sourceSets {
@@ -240,10 +244,16 @@ sourceSets {
 
 The `coil3-landscapist` package functions identically to the `coil-landscapist` package, with the key distinction being its focus on Kotlin Multiplatform. This enables the use of Coil3 across various platforms, including Android, iOS, and Desktop (JVM), facilitating a unified image loading experience across different environments.
 
+`coil3-landscapist` 包的功能与 `coil-landscapist` 包相同，主要区别在于它专注于 Kotlin Multiplatform。这使得 Coil3 可以在多个平台上使用，包括 Android、iOS 和桌面端（JVM），从而在不同环境中实现统一的图片加载体验。
+
 > **Note**: Please make sure your project uses the same Jetpack Compose version on the [release page](https://github.com/skydoves/Landscapist/releases).
+>
+> **注意**：请确保你的项目使用的 Jetpack Compose 版本与[发布页面](https://github.com/skydoves/Landscapist/releases)上的版本一致。
 
 ### CoilImage
 You can load images by using the `CoilImage` composable function as the following example below:
+
+你可以使用 `CoilImage` 可组合函数来加载图片，示例如下：
 
 ```kotlin
 CoilImage(
@@ -259,9 +269,13 @@ CoilImage(
 
 <details>
  <summary>👉 Read further for more details</summary>
+👉 阅读更多以了解更多详情
 
 ### Custom ImageRequest and ImageLoader
+
 You can load images with your own [ImageRequest](https://coil-kt.github.io/coil/image_requests/) and [ImageLoader](https://coil-kt.github.io/coil/image_loaders/), which provides all the necessary information for loading images like caching strategies and transformations.
+
+你可以使用自定义的 [ImageRequest](https://coil-kt.github.io/coil/image_requests/) 和 [ImageLoader](https://coil-kt.github.io/coil/image_loaders/) 来加载图片，这些对象提供了加载图片所需的全部信息，例如缓存策略和图像变换等功能。
 
 ```kotlin
 CoilImage(
@@ -282,6 +296,8 @@ CoilImage(
  ### LocalCoilImageLoader
  You can pass the same instance of your `ImageLoader` down through the Composition in your composable hierarchy as following the example below:
 
+你可以像下面的示例一样，在可组合函数的层级结构中，通过 Composition 向下传递同一个 `ImageLoader` 实例：
+
  ```kotlin
  val imageLoader = ImageLoader.Builder(context).build()
 CompositionLocalProvider(LocalCoilImageLoader provides imageLoader) {
@@ -297,6 +313,8 @@ CompositionLocalProvider(LocalCoilImageLoader provides imageLoader) {
 
 ## Animated Image Supports (GIF, Webp)
 You can load animated GIFs and WebP Images with your `ImageLoader`.
+
+你可以使用你的 `ImageLoader` 来加载动态 GIF 和 WebP 图片。
 
 ```kotlin
 val context = LocalContext.current
