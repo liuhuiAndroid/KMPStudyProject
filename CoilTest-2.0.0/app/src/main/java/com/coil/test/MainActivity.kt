@@ -14,6 +14,7 @@ import com.coil.test.ui.theme.CoilTestTheme
 /**
  * https://juejin.cn/post/7403546034763235378
  * https://juejin.cn/post/7482949461564620811
+ * https://juejin.cn/post/6897872882051842061
  */
 class MainActivity : ComponentActivity() {
 

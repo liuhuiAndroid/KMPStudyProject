@@ -57,6 +57,7 @@ import coil.size.Size as CoilSize
 
 /**
  * Return an [AsyncImagePainter] that executes an [ImageRequest] asynchronously and renders the result.
+ * 创建并返回一个 AsyncImagePainter 实例，用于异步加载图片并绘制
  *
  * **This is a lower-level API than [AsyncImage] and may not work as expected in all situations. **
  *
@@ -105,6 +106,7 @@ fun rememberAsyncImagePainter(
 
 /**
  * Return an [AsyncImagePainter] that executes an [ImageRequest] asynchronously and renders the result.
+ * 创建并返回一个 AsyncImagePainter 实例，用于异步加载图片并绘制
  *
  * **This is a lower-level API than [AsyncImage] and may not work as expected in all situations. **
  *
@@ -116,16 +118,16 @@ fun rememberAsyncImagePainter(
  *   composition phase. Use [SubcomposeAsyncImage] or set a custom [ImageRequest.Builder.size] value
  *   (e.g. `size(Size.ORIGINAL)`) if you need this.
  *
- * @param model Either an [ImageRequest] or the [ImageRequest.data] value.
+ * @param model Either an [ImageRequest] or the [ImageRequest.data] value. 图片资源，可以是 URL、Uri、ImageRequest 等
  * @param imageLoader The [ImageLoader] that will be used to execute the request.
  * @param transform A callback to transform a new [State] before it's applied to the
- *  [AsyncImagePainter]. Typically this is used to overwrite the state's [Painter].
- * @param onState Called when the state of this painter changes.
+ *  [AsyncImagePainter]. Typically this is used to overwrite the state's [Painter]. 状态转换器
+ * @param onState Called when the state of this painter changes. 图片加载状态变化时的回调，例如从 Loading → Success
  * @param contentScale Used to determine the aspect ratio scaling to be used if the canvas bounds
  *  are a different size from the intrinsic size of the image loaded by [model]. This should be set
- *  to the same value that's passed to [Image].
+ *  to the same value that's passed to [Image]. 图片缩放方式
  * @param filterQuality Sampling algorithm applied to a bitmap when it is scaled and drawn into the
- *  destination.
+ *  destination. 图片缩放时的采样算法
  */
 @Composable
 fun rememberAsyncImagePainter(
@@ -137,17 +139,18 @@ fun rememberAsyncImagePainter(
     filterQuality: FilterQuality = DefaultFilterQuality,
 ): AsyncImagePainter {
     val request = requestOf(model)
-    validateRequest(request)
+    validateRequest(request) // 检查请求是否合法
 
-    val painter = remember { AsyncImagePainter(request, imageLoader) }
+    val painter = remember { AsyncImagePainter(request, imageLoader) } // 记住 painter，避免重建
     painter.transform = transform
     painter.onState = onState
     painter.contentScale = contentScale
     painter.filterQuality = filterQuality
     painter.isPreview = LocalInspectionMode.current
     painter.imageLoader = imageLoader
-    painter.request = request // Update request last so all other properties are up to date.
-    painter.onRemembered() // Invoke this manually so `painter.state` is set to `Loading` immediately.
+    painter.request =
+        request // Update request last so all other properties are up to date. // 最后才更新 request，确保其他字段已准备好
+    painter.onRemembered() // Invoke this manually so `painter.state` is set to `Loading` immediately. // 手动调用，确保 painter.state 会变成 Loading
     return painter
 }
 
@@ -157,7 +160,7 @@ fun rememberAsyncImagePainter(
 @Stable
 class AsyncImagePainter internal constructor(
     request: ImageRequest,
-    imageLoader: ImageLoader
+    imageLoader: ImageLoader,
 ) : Painter(), RememberObserver {
 
     private var rememberScope: CoroutineScope? = null
@@ -219,19 +222,29 @@ class AsyncImagePainter internal constructor(
         return true
     }
 
+    /**
+     * 核心生命周期方法之一
+     * 启动一个协程，在作用域内监听 request 的变化并触发图片请求，然后更新 state，让 Compose 可以根据状态来重组界面（比如加载中、成功、失败等）
+     */
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onRemembered() {
         // Short circuit if we're already remembered.
+        // 如果已经执行过（rememberScope 已存在），直接返回，避免重复初始化
         if (rememberScope != null) return
 
         // Create a new scope to observe state and execute requests while we're remembered.
+        // 创建一个和 UI 生命周期绑定的 CoroutineScope，用于后续监听请求变化和执行加载任务。
+        // SupervisorJob：允许子协程失败时不取消整个作用域
+        // Dispatchers.Main.immediate：立即在主线程执行（用于 UI 相关操作）
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         rememberScope = scope
 
         // Manually notify the child painter that we're remembered.
+        // 通知子级 painter（如果有）
         (_painter as? RememberObserver)?.onRemembered()
 
         // If we're in inspection mode skip the image request and set the state to loading.
+        // 如果是预览模式，不发起网络请求，直接显示占位图（placeholder），并设置状态为 Loading。
         if (isPreview) {
             val request = request.newBuilder().defaults(imageLoader.defaults).build()
             updateState(State.Loading(request.placeholder?.toPainter()))
@@ -239,8 +252,13 @@ class AsyncImagePainter internal constructor(
         }
 
         // Observe the current request and execute any emissions.
+        // 启动协程监听并加载图片
         scope.launch {
+            // snapshotFlow { request }：监听 request 的状态变化（是一个 Compose State）
+            // snapshotFlow => 会创建一个对内部 State 有感知的 Flow => 把 Compose 的 State 转换成协程 Flow
+            // 使用场景 => flow 需要用到 State 的时候，用 snapshotFlow；会帮助你在 State 改变的时候触发 Flow 的更新
             snapshotFlow { request }
+                // mapLatest { ... }：每次 request 变化时执行 imageLoader.execute(...)
                 .mapLatest { imageLoader.execute(updateRequest(request)).toState() }
                 .collect(::updateState)
         }
@@ -263,11 +281,9 @@ class AsyncImagePainter internal constructor(
 
     /** Update the [request] to work with [AsyncImagePainter]. */
     private fun updateRequest(request: ImageRequest): ImageRequest {
-        return request.newBuilder()
-            .target(onStart = { placeholder ->
+        return request.newBuilder().target(onStart = { placeholder ->
                 updateState(State.Loading(placeholder?.toPainter()))
-            })
-            .apply {
+            }).apply {
                 if (request.defined.sizeResolver == null) {
                     // If no other size resolver is set, suspend until the canvas size is positive.
                     size { drawSize.mapNotNull { it.toSizeOrNull() }.first() }
@@ -280,8 +296,7 @@ class AsyncImagePainter internal constructor(
                     // AsyncImagePainter scales the image to fit the canvas size at draw time.
                     precision(Precision.INEXACT)
                 }
-            }
-            .build()
+            }.build()
     }
 
     private fun updateState(input: State) {
@@ -383,6 +398,7 @@ private fun validateRequest(request: ImageRequest) {
             name = "ImageRequest.Builder",
             description = "Did you forget to call ImageRequest.Builder.build()?"
         )
+
         is ImageBitmap -> unsupportedData("ImageBitmap")
         is ImageVector -> unsupportedData("ImageVector")
         is Painter -> unsupportedData("Painter")
@@ -392,7 +408,7 @@ private fun validateRequest(request: ImageRequest) {
 
 private fun unsupportedData(
     name: String,
-    description: String = "If you wish to display this $name, use androidx.compose.foundation.Image."
+    description: String = "If you wish to display this $name, use androidx.compose.foundation.Image.",
 ): Nothing = throw IllegalArgumentException("Unsupported type: $name. $description")
 
 private val Size.isPositive get() = width >= 0.5 && height >= 0.5
@@ -403,6 +419,7 @@ private fun Size.toSizeOrNull() = when {
         width = if (width.isFinite()) Dimension(width.roundToInt()) else Dimension.Undefined,
         height = if (height.isFinite()) Dimension(height.roundToInt()) else Dimension.Undefined
     )
+
     else -> null
 }
 

@@ -128,12 +128,15 @@ fun AsyncImage(
     filterQuality: FilterQuality = DefaultFilterQuality,
 ) {
     // Create and execute the image request.
+    // 构建并更新 ImageRequest => 构造最终将要执行的异步加载请求
     val request = updateRequest(requestOf(model), contentScale)
     val painter = rememberAsyncImagePainter(
         request, imageLoader, transform, onState, contentScale, filterQuality
     )
 
     // Draw the content without a parent composable or subcomposition.
+    // ConstraintsSizeResolver 是 Coil 的一个机制，用于根据父布局的约束动态设置图片请求尺寸（避免加载超大图）。
+    // 如果使用的是 ConstraintsSizeResolver，就把它追加到 Modifier 中，以便它能获取父布局的大小信息。
     val sizeResolver = request.sizeResolver
     Content(
         modifier = if (sizeResolver is ConstraintsSizeResolver) {
@@ -150,7 +153,16 @@ fun AsyncImage(
     )
 }
 
-/** Draws the current image content. */
+/**
+ * Draws the current image content.
+ * @param modifier
+ * @param painter
+ * @param contentDescription
+ * @param alignment
+ * @param contentScale 缩放方式
+ * @param alpha 透明度
+ * @param colorFilter 滤镜
+ */
 @Composable
 internal fun Content(
     modifier: Modifier,
@@ -161,10 +173,17 @@ internal fun Content(
     alpha: Float,
     colorFilter: ColorFilter?,
 ) = Layout(
+    // 本身不绘制内容，真正的绘图是交给 Modifier 来做
+    // 为什么要用 Layout + Modifier 而不是直接 Image() => 为了实现更细粒度的控制
+    // - 动态决定是否绘图（比如等图片加载成功后才绘制）
+    // - 支持动态状态管理（通过 Painter 的状态）
+    // - 可组合地支持自定义 Painter 的绘制行为
+    // - 更灵活地嵌入自定义动画、滤镜等效果
     modifier = modifier
         .contentDescription(contentDescription)
-        .clipToBounds()
+        .clipToBounds() // 确保绘图不超出布局边界
         .then(
+            // ContentPainterModifier 是一个自定义的 DrawModifier，它会调用 painter.draw(...) 来绘制图片
             ContentPainterModifier(
                 painter = painter,
                 alignment = alignment,
@@ -218,6 +237,9 @@ internal class ConstraintsSizeResolver : SizeResolver, LayoutModifier {
     }
 }
 
+/**
+ * 给无障碍服务提供图片的文字描述
+ */
 @Stable
 private fun Modifier.contentDescription(contentDescription: String?): Modifier {
     if (contentDescription != null) {

@@ -1,3 +1,4 @@
+// 即使代码中使用了已弃用的 API，也不要报警告
 @file:Suppress("DEPRECATION")
 
 package com.coil.test.singleton
@@ -22,24 +23,24 @@ import com.coil.test.compose.AsyncImage
  * @param model Either an [ImageRequest] or the [ImageRequest.data] value.
  * @param contentDescription Text used by accessibility services to describe what this image
  *  represents. This should always be provided unless this image is used for decorative purposes,
- *  and does not represent a meaningful action that a user can take.
+ *  and does not represent a meaningful action that a user can take. 给无障碍服务使用的描述文字
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content.
- * @param placeholder A [Painter] that is displayed while the image is loading.
- * @param error A [Painter] that is displayed when the image request is unsuccessful.
- * @param fallback A [Painter] that is displayed when the request's [ImageRequest.data] is null.
- * @param onLoading Called when the image request begins loading.
- * @param onSuccess Called when the image request completes successfully.
- * @param onError Called when the image request completes unsuccessfully.
+ * @param placeholder A [Painter] that is displayed while the image is loading. 图片加载中时显示的占位图
+ * @param error A [Painter] that is displayed when the image request is unsuccessful. 加载失败时显示的图片
+ * @param fallback A [Painter] that is displayed when the request's [ImageRequest.data] is null. 如果 model 是 null，则显示这个图片（默认等于 error）
+ * @param onLoading Called when the image request begins loading. 加载中回调
+ * @param onSuccess Called when the image request completes successfully. 成功回调
+ * @param onError Called when the image request completes unsuccessfully. 失败回调
  * @param alignment Optional alignment parameter used to place the [com.coil.test.compose.AsyncImagePainter] in the given
- *  bounds defined by the width and height.
+ *  bounds defined by the width and height. 对齐方式，默认居中
  * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be
  *  used if the bounds are a different size from the intrinsic size of the [com.coil.test.compose.AsyncImagePainter].
  * @param alpha Optional opacity to be applied to the [com.coil.test.compose.AsyncImagePainter] when it is rendered
- *  onscreen.
+ *  onscreen. 透明度
  * @param colorFilter Optional [ColorFilter] to apply for the [com.coil.test.compose.AsyncImagePainter] when it is
- *  rendered onscreen.
+ *  rendered onscreen. 颜色滤镜
  * @param filterQuality Sampling algorithm applied to a bitmap when it is scaled and drawn into the
- *  destination.
+ *  destination. 图像缩放时使用的采样质量
  */
 @Composable
 fun AsyncImage(
@@ -77,6 +78,8 @@ fun AsyncImage(
 
 /**
  * A composable that executes an [ImageRequest] asynchronously and renders the result.
+ * 用 transform: (State) -> State 替代了 placeholder、error 等参数，用于对加载状态进行统一变换，比如可以自定义状态对应的 Painter
+ * onState: 每次状态变更（包括 loading、success、error）都会回调此函数。
  *
  * @param model Either an [ImageRequest] or the [ImageRequest.data] value.
  * @param contentDescription Text used by accessibility services to describe what this image
