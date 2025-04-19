@@ -142,10 +142,10 @@ fun rememberAsyncImagePainter(
     validateRequest(request) // 检查请求是否合法
 
     val painter = remember { AsyncImagePainter(request, imageLoader) } // 记住 painter，避免重建
-    painter.transform = transform
-    painter.onState = onState
-    painter.contentScale = contentScale
-    painter.filterQuality = filterQuality
+    painter.transform = transform // 状态转换器
+    painter.onState = onState // 图片加载状态变化时的回调，例如从 Loading → Success
+    painter.contentScale = contentScale // 图片缩放方式
+    painter.filterQuality = filterQuality // 图片缩放时的采样算法
     painter.isPreview = LocalInspectionMode.current
     painter.imageLoader = imageLoader
     painter.request =
@@ -236,6 +236,8 @@ class AsyncImagePainter internal constructor(
         // 创建一个和 UI 生命周期绑定的 CoroutineScope，用于后续监听请求变化和执行加载任务。
         // SupervisorJob：允许子协程失败时不取消整个作用域
         // Dispatchers.Main.immediate：立即在主线程执行（用于 UI 相关操作）
+        // 通过 + 组合成一个 CoroutineContext => SupervisorJob() 控制协程的生命周期，Dispatchers.Main.immediate 控制协程在哪个线程执行
+        // HenCoder 协程 => coroutine Scope
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
         rememberScope = scope
 
@@ -282,21 +284,21 @@ class AsyncImagePainter internal constructor(
     /** Update the [request] to work with [AsyncImagePainter]. */
     private fun updateRequest(request: ImageRequest): ImageRequest {
         return request.newBuilder().target(onStart = { placeholder ->
-                updateState(State.Loading(placeholder?.toPainter()))
-            }).apply {
-                if (request.defined.sizeResolver == null) {
-                    // If no other size resolver is set, suspend until the canvas size is positive.
-                    size { drawSize.mapNotNull { it.toSizeOrNull() }.first() }
-                }
-                if (request.defined.scale == null) {
-                    // If no other scale resolver is set, use the content scale.
-                    scale(contentScale.toScale())
-                }
-                if (request.defined.precision != Precision.EXACT) {
-                    // AsyncImagePainter scales the image to fit the canvas size at draw time.
-                    precision(Precision.INEXACT)
-                }
-            }.build()
+            updateState(State.Loading(placeholder?.toPainter()))
+        }).apply {
+            if (request.defined.sizeResolver == null) {
+                // If no other size resolver is set, suspend until the canvas size is positive.
+                size { drawSize.mapNotNull { it.toSizeOrNull() }.first() }
+            }
+            if (request.defined.scale == null) {
+                // If no other scale resolver is set, use the content scale.
+                scale(contentScale.toScale())
+            }
+            if (request.defined.precision != Precision.EXACT) {
+                // AsyncImagePainter scales the image to fit the canvas size at draw time.
+                precision(Precision.INEXACT)
+            }
+        }.build()
     }
 
     private fun updateState(input: State) {
@@ -392,6 +394,11 @@ class AsyncImagePainter internal constructor(
     }
 }
 
+/**
+ * ImageBitmap 是 Compose 中的图像类型，它应该直接用 Image(bitmap = ...) 来显示
+ * ImageVector 是矢量图（比如 Icons），同样不应该用 AsyncImagePainter 去加载。正确做法：Image(imageVector = ...)
+ * Painter 是一个通用的绘制接口，比如你已经有了一个 painter，直接用 Image(painter = ...) 显示即可，不用再包一层 Coil。
+ */
 private fun validateRequest(request: ImageRequest) {
     when (request.data) {
         is ImageRequest.Builder -> unsupportedData(
@@ -406,6 +413,9 @@ private fun validateRequest(request: ImageRequest) {
     require(request.target == null) { "request.target must be null." }
 }
 
+/**
+ * 开发时的防御机制，没有 try catch，会导致程序崩溃
+ */
 private fun unsupportedData(
     name: String,
     description: String = "If you wish to display this $name, use androidx.compose.foundation.Image.",

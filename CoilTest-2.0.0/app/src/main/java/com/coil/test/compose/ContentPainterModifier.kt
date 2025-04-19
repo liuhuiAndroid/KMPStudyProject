@@ -55,7 +55,7 @@ internal data class ContentPainterModifier(
      */
     override fun MeasureScope.measure(
         measurable: Measurable,
-        constraints: Constraints
+        constraints: Constraints,
     ): MeasureResult {
         // modifyConstraints() 会根据图片本身的 intrinsicSize（固有大小）、缩放方式、父布局限制等，计算出合适的目标大小
         val placeable = measurable.measure(modifyConstraints(constraints))
@@ -71,7 +71,7 @@ internal data class ContentPainterModifier(
      */
     override fun IntrinsicMeasureScope.minIntrinsicWidth(
         measurable: IntrinsicMeasurable,
-        height: Int
+        height: Int,
     ): Int {
         return if (painter.intrinsicSize.isSpecified) {
             val constraints = Constraints(maxHeight = height)
@@ -89,7 +89,7 @@ internal data class ContentPainterModifier(
      */
     override fun IntrinsicMeasureScope.maxIntrinsicWidth(
         measurable: IntrinsicMeasurable,
-        height: Int
+        height: Int,
     ): Int {
         return if (painter.intrinsicSize.isSpecified) {
             val constraints = Constraints(maxHeight = height)
@@ -107,11 +107,12 @@ internal data class ContentPainterModifier(
      */
     override fun IntrinsicMeasureScope.minIntrinsicHeight(
         measurable: IntrinsicMeasurable,
-        width: Int
+        width: Int,
     ): Int {
         return if (painter.intrinsicSize.isSpecified) {
             val constraints = Constraints(maxWidth = width)
-            val layoutHeight = measurable.minIntrinsicHeight(modifyConstraints(constraints).maxWidth)
+            val layoutHeight =
+                measurable.minIntrinsicHeight(modifyConstraints(constraints).maxWidth)
             val scaledSize = calculateScaledSize(Size(width.toFloat(), layoutHeight.toFloat()))
             max(scaledSize.height.roundToInt(), layoutHeight)
         } else {
@@ -125,11 +126,12 @@ internal data class ContentPainterModifier(
      */
     override fun IntrinsicMeasureScope.maxIntrinsicHeight(
         measurable: IntrinsicMeasurable,
-        width: Int
+        width: Int,
     ): Int {
         return if (painter.intrinsicSize.isSpecified) {
             val constraints = Constraints(maxWidth = width)
-            val layoutHeight = measurable.maxIntrinsicHeight(modifyConstraints(constraints).maxWidth)
+            val layoutHeight =
+                measurable.maxIntrinsicHeight(modifyConstraints(constraints).maxWidth)
             val scaledSize = calculateScaledSize(Size(width.toFloat(), layoutHeight.toFloat()))
             max(scaledSize.height.roundToInt(), layoutHeight)
         } else {

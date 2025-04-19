@@ -172,7 +172,7 @@ internal fun Content(
     contentScale: ContentScale,
     alpha: Float,
     colorFilter: ColorFilter?,
-) = Layout(
+) = Layout( // 视频 => 7. 自定义布局和 Layout() => 打脸朱凯不带 content 的 Layout 没什么用
     // 本身不绘制内容，真正的绘图是交给 Modifier 来做
     // 为什么要用 Layout + Modifier 而不是直接 Image() => 为了实现更细粒度的控制
     // - 动态决定是否绘图（比如等图片加载成功后才绘制）
@@ -197,6 +197,10 @@ internal fun Content(
     }
 )
 
+/**
+ * 根据 ContentScale 和当前 ImageRequest 的状态，决定是否需要为请求设置一个合适的 SizeResolver（大小解析器）
+ * @param contentScale 表示 Compose 中用于控制图片如何缩放填充容器的枚举
+ */
 @Composable
 internal fun updateRequest(request: ImageRequest, contentScale: ContentScale): ImageRequest {
     return if (request.defined.sizeResolver == null) {
@@ -211,7 +215,10 @@ internal fun updateRequest(request: ImageRequest, contentScale: ContentScale): I
     }
 }
 
-/** A [SizeResolver] that computes the size from the constrains passed during the layout phase. */
+/**
+ * A [SizeResolver] that computes the size from the constrains passed during the layout phase.
+ * 根据布局阶段传入的约束（constraints）来计算尺寸
+ */
 internal class ConstraintsSizeResolver : SizeResolver, LayoutModifier {
 
     private val _constraints = MutableStateFlow(ZeroConstraints)
