@@ -117,15 +117,21 @@ fun SubcomposeAsyncImage(
     content: @Composable SubcomposeAsyncImageScope.() -> Unit,
 ) {
     // Create and execute the image request.
+    // 构造 ImageRequest
     val request = updateRequest(requestOf(model), contentScale)
+    // 用 rememberAsyncImagePainter() 创建 Painter，内部启动异步加载任务，并缓存
     val painter = rememberAsyncImagePainter(
         request, imageLoader, transform, onState, contentScale, filterQuality
     )
 
+    // 判断是否需要 Subcompose（性能优化点）
     val sizeResolver = request.sizeResolver
     if (sizeResolver !is ConstraintsSizeResolver) {
         // Fast path: draw the content without subcomposition as we don't need to resolve the
         // constraints.
+        // 如果请求中不依赖 layout constraints 计算图片大小（比如你直接写了 size(100, 100)），就可以走“快速路径”。
+        // 使用普通的 Box 布局，不需要重新 subcompose。
+        // 性能好，推荐！
         Box(
             modifier = modifier,
             contentAlignment = alignment,
@@ -144,6 +150,10 @@ fun SubcomposeAsyncImage(
     } else {
         // Slow path: draw the content with subcomposition as we need to resolve the constraints
         // before calling `content`.
+        // 如果 size 依赖布局约束（比如你用 .size(ViewSizeResolver(...))），就得用 BoxWithConstraints。
+        // 这时需要先解析约束后再构建内容，所以用 SubcomposeLayout 实现。
+        // 性能差一点，但必须这么做。
+        // 间接地使用了 SubcomposeLayout => BoxWithConstraints
         BoxWithConstraints(
             modifier = modifier,
             contentAlignment = alignment,
@@ -152,6 +162,7 @@ fun SubcomposeAsyncImage(
             // Ensure `painter.state` is up to date immediately. Resolving the constraints
             // synchronously is necessary to ensure that images from the memory cache are resolved
             // and `painter.state` is updated to `Success` before invoking `content`.
+            // <-- 在这步设置 constraints，BoxWithConstraints 的父组件给 BoxWithConstraints 的尺寸限制
             sizeResolver.setConstraints(constraints)
 
             RealSubcomposeAsyncImageScope(
@@ -169,8 +180,10 @@ fun SubcomposeAsyncImage(
 
 /**
  * A scope for the children of [com.coil.test.singleton.SubcomposeAsyncImage].
+ *
+ * extend BoxScope：提供了 Box 中可用的布局功能（如 align, matchParentSize 等）
  */
-@LayoutScopeMarker
+@LayoutScopeMarker // 标记这是一个布局作用域
 @Immutable
 interface SubcomposeAsyncImageScope : BoxScope {
 
@@ -240,6 +253,9 @@ private fun contentOf(
     }
 }
 
+/**
+ * BoxScope by parentScope 接口委托，表示将 BoxScope 的所有函数“委托”给 parentScope 实例。
+ */
 private data class RealSubcomposeAsyncImageScope(
     private val parentScope: BoxScope,
     override val painter: AsyncImagePainter,

@@ -234,7 +234,7 @@ class AsyncImagePainter internal constructor(
 
         // Create a new scope to observe state and execute requests while we're remembered.
         // 创建一个和 UI 生命周期绑定的 CoroutineScope，用于后续监听请求变化和执行加载任务。
-        // SupervisorJob：允许子协程失败时不取消整个作用域
+        // SupervisorJob：字面意思担任主管功能的 Job，允许子协程失败时不取消整个作用域 => childCancelled = false；父 Job 不会因为子 Job 取消
         // Dispatchers.Main.immediate：立即在主线程执行（用于 UI 相关操作）
         // 通过 + 组合成一个 CoroutineContext => SupervisorJob() 控制协程的生命周期，Dispatchers.Main.immediate 控制协程在哪个线程执行
         // HenCoder 协程 => coroutine Scope
