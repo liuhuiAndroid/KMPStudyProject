@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.ktor.test.model.Weather24h
 import com.ktor.test.model.Weather7d
@@ -36,7 +37,6 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
@@ -104,11 +104,12 @@ private val httpClient: HttpClient by lazy {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Column {
+        val coroutineScope = rememberCoroutineScope()
         Text(
             text = "Hello $name!", modifier = modifier
         )
         Button({
-            GlobalScope.launch(Dispatchers.IO) {
+            coroutineScope.launch(Dispatchers.IO) {
                 kotlin.runCatching {
                     Log.i("MainActivity", "Send message.")
                     val response = httpClient.get(urlString = "v7/weather/now") {
@@ -124,7 +125,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             Text("请求实时天气")
         }
         Button({
-            GlobalScope.launch(Dispatchers.IO) {
+            coroutineScope.launch(Dispatchers.IO) {
                 kotlin.runCatching {
                     Log.i("MainActivity", "Send message.")
                     val response = httpClient.get(urlString = "v7/weather/7d") {
@@ -140,7 +141,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             Text("请求每日天气预报/7天预报")
         }
         Button({
-            GlobalScope.launch(Dispatchers.IO) {
+            coroutineScope.launch(Dispatchers.IO) {
                 kotlin.runCatching {
                     Log.i("MainActivity", "Send message.")
                     val response = httpClient.get(urlString = "v7/weather/24h") {
