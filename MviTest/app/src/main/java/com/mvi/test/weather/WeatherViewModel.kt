@@ -41,6 +41,8 @@ class WeatherViewModel : ViewModel(), ContainerHost<WeatherState, UIComponent> {
                             is UIComponent.Toast -> {
                                 postSideEffect(UIComponent.Toast(dataState.uiComponent.text))
                             }
+
+                            else -> {}
                         }
                     }
                 }
