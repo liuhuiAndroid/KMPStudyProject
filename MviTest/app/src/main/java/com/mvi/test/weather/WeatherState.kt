@@ -1,4 +1,4 @@
-package com.mvi.test
+package com.mvi.test.weather
 
 import com.mvi.test.network.model.WeatherNow
 

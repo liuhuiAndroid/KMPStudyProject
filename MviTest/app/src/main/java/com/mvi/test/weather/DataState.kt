@@ -1,4 +1,4 @@
-package com.mvi.test
+package com.mvi.test.weather
 
 sealed class DataState<T> {
     data class Loading<T>(val isLoading: Boolean) : DataState<T>()
@@ -8,6 +8,6 @@ sealed class DataState<T> {
 
 sealed class UIComponent {
     data class Toast(val text: String) : UIComponent()
-//    data class SnackBar(val text: String) : UIComponent()
-//    data class Dialog(val title: String, val message: String) : UIComponent()
+    data class SnackBar(val text: String) : UIComponent()
+    data class Dialog(val title: String, val message: String) : UIComponent()
 }

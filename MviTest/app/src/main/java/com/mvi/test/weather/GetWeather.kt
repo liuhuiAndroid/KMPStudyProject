@@ -1,4 +1,4 @@
-package com.mvi.test
+package com.mvi.test.weather
 
 import com.mvi.test.network.WeatherApi
 import com.mvi.test.network.model.WeatherNow
@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class GetWeather(
-    private val weatherApi: WeatherApi
+    private val weatherApi: WeatherApi,
 ) {
 
     fun execute(): Flow<DataState<WeatherNow>> {
