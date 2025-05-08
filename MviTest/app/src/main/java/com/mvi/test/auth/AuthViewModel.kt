@@ -30,6 +30,7 @@ data class AuthScreenState(
 
 /**
  * Intentions from the UI like taps, scrolls, text changes
+ * Intents goes from ui to viewmodel
  */
 sealed class UiIntent {
     data class EnterUsername(val value: String) : UiIntent()
@@ -39,6 +40,7 @@ sealed class UiIntent {
 
 /**
  * The events to be consumed by the UI like snackbar, display toast, navigate
+ * UiEvents goes from viewmodel to ui
  */
 sealed class UiEvent {
     data object Idle : UiEvent()
