@@ -16,6 +16,10 @@ import androidx.compose.ui.platform.LocalContext
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+/**
+ * https://www.youtube.com/watch?v=T4NGT9DL3qw
+ * The Ultimate guide to MVI in Android
+ */
 @Composable
 fun WeatherScreen(viewModel: WeatherViewModel) {
     val context = LocalContext.current
