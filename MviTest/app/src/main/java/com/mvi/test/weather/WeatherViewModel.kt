@@ -3,11 +3,18 @@ package com.mvi.test.weather
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mvi.test.network.WeatherApi
+import com.mvi.test.network.model.WeatherNow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.viewmodel.container
+
+data class WeatherState(
+    val progressBar: Boolean = false,
+    val weatherNow: WeatherNow? = null,
+    val error: String? = null,
+)
 
 class WeatherViewModel : ViewModel(), ContainerHost<WeatherState, UIComponent> {
 

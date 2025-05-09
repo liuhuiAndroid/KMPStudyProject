@@ -10,9 +10,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.mvi.test.auth.AuthViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -21,7 +25,12 @@ import org.orbitmvi.orbit.compose.collectSideEffect
  * The Ultimate guide to MVI in Android
  */
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel) {
+fun WeatherScreen(
+    navController: NavHostController,
+) {
+    val navBackStackEntry = remember { navController.currentBackStackEntry!! }
+    val viewModel: WeatherViewModel = viewModel(navBackStackEntry)
+
     val context = LocalContext.current
     val state by viewModel.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->

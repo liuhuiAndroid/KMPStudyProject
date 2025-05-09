@@ -98,12 +98,13 @@ class AuthViewModel : ViewModel() {
     private fun signIn() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            delay(2000)
+            delay(800)
             _state.update { it.copy(isLoading = false) }
             if (_state.value.username.isNotEmpty() && _state.value.password.isNotEmpty()) {
                 _event.send(UiEvent.Navigate("main"))
             } else {
-                _event.send(UiEvent.ShowSnackBar("Invalid credentials."))
+                _event.send(UiEvent.Navigate("main")) // Test
+                // _event.send(UiEvent.ShowSnackBar("Invalid credentials."))
             }
         }
     }
@@ -111,5 +112,5 @@ class AuthViewModel : ViewModel() {
 }
 
 fun String.isValidPassword(): Boolean {
-    return length > 6
+    return length >= 6 || true // Test
 }
