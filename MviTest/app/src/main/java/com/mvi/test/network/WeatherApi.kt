@@ -1,7 +1,7 @@
 package com.mvi.test.network
 
 import android.util.Log
-import com.mvi.test.Constants
+import com.mvi.test.utils.Constants
 import com.mvi.test.network.model.WeatherNow
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp

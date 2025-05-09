@@ -8,6 +8,7 @@ import com.mvi.test.navigation.MainNavigation
 import com.mvi.test.ui.theme.MviTestTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.flow
 class GetWeather(
     private val weatherApi: WeatherApi,
 ) {
-
     fun execute(): Flow<DataState<WeatherNow>> {
         return flow {
             emit(DataState.Loading(true))

@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.kotlin.serialization)
 }
 //apply(plugin = "kotlin-parcelize")
 
@@ -63,4 +63,9 @@ dependencies {
     implementation(libs.orbit.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
+    implementation(libs.permissions)
+    implementation(libs.bundles.coil)
+    implementation(libs.lottie.compose)
+    implementation(libs.timber)
+    implementation(libs.mmkv)
 }

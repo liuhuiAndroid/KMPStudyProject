@@ -20,26 +20,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.mvi.test.navigation.MainScreens
+import org.koin.androidx.compose.koinViewModel
 
 /**
  * Mastering UI Events and States in Jetpack Compose ✅
  * https://www.youtube.com/watch?v=TzA049PAlSs
  */
 @Composable
-fun AuthScreen(navController: NavHostController, snackbarHostState: SnackbarHostState) {
-    val navBackStackEntry = remember { navController.currentBackStackEntry!! }
-    val viewModel: AuthViewModel = viewModel(navBackStackEntry)
-
+fun AuthScreen(
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState,
+    viewModel: AuthViewModel = koinViewModel(),
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val event by viewModel.event.collectAsStateWithLifecycle(initialValue = UiEvent.Idle)
 
@@ -48,7 +48,7 @@ fun AuthScreen(navController: NavHostController, snackbarHostState: SnackbarHost
             is UiEvent.Idle -> {}
 
             is UiEvent.Navigate -> {
-                navController.navigate(MainScreens.WeatherScreen.name)
+                navController.navigate(MainScreens.HetaScreen.name)
             }
 
             is UiEvent.ShowSnackBar -> {

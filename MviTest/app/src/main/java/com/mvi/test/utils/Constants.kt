@@ -1,4 +1,4 @@
-package com.mvi.test
+package com.mvi.test.utils
 
 object Constants {
     const val BASE_URL = "https://api.qweather.com/"
