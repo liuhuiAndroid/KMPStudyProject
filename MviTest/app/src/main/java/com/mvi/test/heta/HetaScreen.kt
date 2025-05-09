@@ -19,6 +19,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HetaScreen(
+    navigateBack: (() -> Unit)? = null,
     viewModel: HetaViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -67,6 +68,11 @@ fun HetaScreen(
             } else {
                 Text("queryDxSecretByDeviceCode")
             }
+        }
+        Button(onClick = {
+            navigateBack?.invoke()
+        }) {
+            Text("Back")
         }
     }
 }

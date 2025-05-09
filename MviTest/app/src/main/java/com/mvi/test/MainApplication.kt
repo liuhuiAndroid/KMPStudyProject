@@ -9,6 +9,8 @@ class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        // https://www.youtube.com/watch?v=Yg7WNdYo8_c
+        // No more Manual Koin Initialization - New Context Binding is Awesome! 🍻
         startKoin {
             androidContext(this@MainApplication)
             androidLogger()

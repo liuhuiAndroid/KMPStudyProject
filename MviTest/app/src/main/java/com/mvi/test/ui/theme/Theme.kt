@@ -33,6 +33,10 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+/**
+ * https://www.youtube.com/watch?v=r39D_qHifOk&t=14s
+ * Build your App from Scratch without Material 3 Color System
+ */
 @Composable
 fun MviTestTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

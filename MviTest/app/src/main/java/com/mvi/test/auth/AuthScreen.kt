@@ -26,8 +26,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
-import com.mvi.test.navigation.MainScreens
 import org.koin.androidx.compose.koinViewModel
 
 /**
@@ -36,9 +34,9 @@ import org.koin.androidx.compose.koinViewModel
  */
 @Composable
 fun AuthScreen(
-    navController: NavHostController,
     snackbarHostState: SnackbarHostState,
     viewModel: AuthViewModel = koinViewModel(),
+    navigateToMainScreen: (() -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val event by viewModel.event.collectAsStateWithLifecycle(initialValue = UiEvent.Idle)
@@ -48,7 +46,7 @@ fun AuthScreen(
             is UiEvent.Idle -> {}
 
             is UiEvent.Navigate -> {
-                navController.navigate(MainScreens.HetaScreen.name)
+                navigateToMainScreen?.invoke()
             }
 
             is UiEvent.ShowSnackBar -> {

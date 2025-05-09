@@ -36,7 +36,8 @@ fun MainNavigation() {
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (currentRoute == MainScreens.AuthScreen.name) {
+            println("当前 route 是：$currentRoute")
+            if (currentRoute == Screens.AuthScreen.toString()) {
                 TopAppBar(
                     title = { Text("Sign in") }, colors = TopAppBarDefaults.topAppBarColors(
                         containerColor = Color.LightGray
@@ -47,20 +48,36 @@ fun MainNavigation() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = MainScreens.AuthScreen.name,
+            startDestination = Screens.AuthScreen,
             modifier = Modifier.padding(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding()
             )
         ) {
-            composable(MainScreens.AuthScreen.name) {
-                AuthScreen(navController, snackbarHostState)
+            composable<Screens.AuthScreen> {
+                AuthScreen(
+                    snackbarHostState, navigateToMainScreen = {
+                        navController.navigate(Screens.HetaScreen("123"))
+                    }
+                )
             }
-            composable(MainScreens.WeatherScreen.name) {
+            composable<Screens.WeatherScreen> {
                 WeatherScreen(navController)
             }
-            composable(MainScreens.HetaScreen.name) {
-                HetaScreen()
+            composable<Screens.HetaScreen> {
+                HetaScreen(
+                    navigateBack = {
+                        // https://www.youtube.com/watch?v=QpRuoxKd5SY
+                        // 3 Navigation issues that you MUST Avoid!
+                        // navController.navigateUp()
+                        navController.navigate(Screens.AuthScreen) {
+                            launchSingleTop = true
+                            popUpTo<Screens.HetaScreen> {
+                                inclusive = true
+                            }
+                        }
+                        // navController.popBackStack()
+                    })
             }
         }
     }

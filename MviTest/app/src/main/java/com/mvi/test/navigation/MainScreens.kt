@@ -1,9 +1,22 @@
 package com.mvi.test.navigation
 
-enum class MainScreens {
-    SplashScreen,
-    AuthScreen,
-    MainScreen,
-    WeatherScreen,
-    HetaScreen,
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class Screens {
+    @Serializable
+    object SplashScreen : Screens()
+
+    @Serializable
+    object AuthScreen : Screens()
+
+    @Serializable
+    object MainScreen : Screens()
+
+    @Serializable
+    object WeatherScreen : Screens()
+
+    @Serializable
+    data class HetaScreen(val pointId: String) : Screens()
 }
+

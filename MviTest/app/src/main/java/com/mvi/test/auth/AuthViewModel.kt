@@ -108,7 +108,6 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
-
 }
 
 fun String.isValidPassword(): Boolean {
