@@ -1,4 +1,4 @@
-package com.mvi.test.splash
+package com.mvi.test.screen.splash
 
 /**
  * https://www.youtube.com/watch?v=Oy0oXwv3kSc

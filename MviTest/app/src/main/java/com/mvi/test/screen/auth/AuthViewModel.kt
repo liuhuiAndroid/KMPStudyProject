@@ -1,4 +1,4 @@
-package com.mvi.test.auth
+package com.mvi.test.screen.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

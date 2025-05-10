@@ -17,10 +17,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mvi.test.auth.AuthScreen
+import com.mvi.test.screen.auth.AuthScreen
 import com.mvi.test.heta.HetaScreen
-import com.mvi.test.weather.WeatherScreen
+import com.mvi.test.screen.weather.WeatherScreen
 import androidx.compose.runtime.getValue
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import com.mvi.test.screen.book.BookDetailsScreen
+import com.mvi.test.screen.book.BookHomeScreen
+import com.mvi.test.screen.book.BookManageScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +63,7 @@ fun MainNavigation() {
             composable<Screens.AuthScreen> {
                 AuthScreen(
                     snackbarHostState, navigateToMainScreen = {
-                        navController.navigate(Screens.HetaScreen("123"))
+                        navController.navigate(Screens.BookHomeScreen)
                     }
                 )
             }
@@ -78,6 +84,35 @@ fun MainNavigation() {
                         }
                         // navController.popBackStack()
                     })
+            }
+            composable<Screens.BookHomeScreen> {
+                BookHomeScreen(
+                    onBookSelect = {
+                        navController.navigate(Screens.BookDetailsScreen(it))
+                    },
+                    onCreateClick = {
+                        navController.navigate(Screens.BookManageScreen())
+                    }
+                )
+            }
+            composable<Screens.BookManageScreen> {
+                val args = it.toRoute<Screens.BookDetailsScreen>()
+                BookManageScreen(
+                    id = args.id,
+                    onBackClick = { navController.navigateUp() }
+                )
+            }
+            // https://www.youtube.com/watch?v=AIC_OFQ1r3k
+            // Type-Safe Navigation with the OFFICIAL Compose Navigation Library
+            // => Search navigation
+            composable<Screens.BookDetailsScreen> {
+                val args = it.toRoute<Screens.BookDetailsScreen>()
+                BookDetailsScreen(
+                    onEditClick = {
+                        navController.navigate(Screens.BookManageScreen(args.id))
+                    },
+                    onBackClick = { navController.navigateUp() }
+                )
             }
         }
     }

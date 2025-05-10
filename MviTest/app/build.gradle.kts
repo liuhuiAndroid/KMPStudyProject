@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 //apply(plugin = "kotlin-parcelize")
 
@@ -39,6 +41,9 @@ android {
     buildFeatures {
         compose = true
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -64,8 +69,10 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
     implementation(libs.permissions)
-    implementation(libs.bundles.coil)
+    implementation(libs.bundles.landscapist)
     implementation(libs.lottie.compose)
     implementation(libs.timber)
     implementation(libs.mmkv)
+    implementation(libs.bundles.room)
+    ksp(libs.room.compiler)
 }

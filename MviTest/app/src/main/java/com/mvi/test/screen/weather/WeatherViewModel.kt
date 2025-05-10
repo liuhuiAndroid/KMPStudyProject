@@ -1,4 +1,4 @@
-package com.mvi.test.weather
+package com.mvi.test.screen.weather
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

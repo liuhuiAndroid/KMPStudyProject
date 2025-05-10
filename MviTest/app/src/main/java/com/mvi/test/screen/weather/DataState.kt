@@ -1,4 +1,4 @@
-package com.mvi.test.weather
+package com.mvi.test.screen.weather
 
 sealed class DataState<T> {
     data class Loading<T>(val isLoading: Boolean) : DataState<T>()

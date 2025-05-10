@@ -1,4 +1,4 @@
-package com.mvi.test.weather
+package com.mvi.test.screen.weather
 
 import com.mvi.test.network.WeatherApi
 import com.mvi.test.network.model.WeatherNow

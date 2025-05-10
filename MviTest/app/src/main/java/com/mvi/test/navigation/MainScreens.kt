@@ -18,5 +18,14 @@ sealed class Screens {
 
     @Serializable
     data class HetaScreen(val pointId: String) : Screens()
+
+    @Serializable
+    object BookHomeScreen : Screens()
+
+    @Serializable
+    data class BookDetailsScreen(val id: Int) : Screens()
+
+    @Serializable
+    data class BookManageScreen(val id: Int = -1) : Screens()
 }
 

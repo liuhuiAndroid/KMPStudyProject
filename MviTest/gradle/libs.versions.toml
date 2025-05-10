@@ -17,6 +17,11 @@ coil = "3.1.0"
 lottie = "6.6.2"
 timber = "5.0.1"
 mmkv = "2.2.2"
+landscapist = "2.4.7"
+room = "2.7.1"
+ksp = "2.0.20-1.0.24"
+kotlinxSerialization = "1.8.1"
+kotlinxCoroutines = "1.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,12 +54,26 @@ coil-network-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp"
 lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottie" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 mmkv = { group = "com.tencent", name = "mmkv", version.ref = "mmkv" }
+landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil", version.ref = "landscapist" }
+landscapist-placeholder = { group = "com.github.skydoves", name = "landscapist-placeholder", version.ref = "landscapist" }
+landscapist-animation = { group = "com.github.skydoves", name = "landscapist-animation", version.ref = "landscapist" }
+landscapist-transformation = { group = "com.github.skydoves", name = "landscapist-transformation", version.ref = "landscapist" }
+landscapist-palette = { group = "com.github.skydoves", name = "landscapist-palette", version.ref = "landscapist" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
 
 [bundles]
 koin = [
@@ -71,4 +90,16 @@ ktor = [
 coil = [
     "coil-compose",
     "coil-network-okhttp",
+]
+landscapist = [
+    "landscapist-coil",
+    "landscapist-placeholder",
+    "landscapist-animation",
+    "landscapist-transformation",
+    "landscapist-palette",
+]
+room = [
+    "room-runtime",
+    "room-ktx",
+    "room-paging",
 ]

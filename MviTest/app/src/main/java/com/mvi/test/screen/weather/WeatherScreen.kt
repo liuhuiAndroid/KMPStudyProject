@@ -1,4 +1,4 @@
-package com.mvi.test.weather
+package com.mvi.test.screen.weather
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.mvi.test.auth.AuthViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
