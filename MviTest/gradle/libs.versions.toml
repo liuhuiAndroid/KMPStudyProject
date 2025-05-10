@@ -19,7 +19,8 @@ timber = "5.0.1"
 mmkv = "2.2.2"
 landscapist = "2.4.7"
 room = "2.7.1"
-ksp = "2.0.20-1.0.24"
+sqlite = "2.5.1"
+ksp = "2.1.20-2.0.1"
 kotlinxSerialization = "1.8.1"
 kotlinxCoroutines = "1.10.2"
 
@@ -63,6 +64,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -102,4 +104,5 @@ room = [
     "room-runtime",
     "room-ktx",
     "room-paging",
+    "sqlite-bundled"
 ]

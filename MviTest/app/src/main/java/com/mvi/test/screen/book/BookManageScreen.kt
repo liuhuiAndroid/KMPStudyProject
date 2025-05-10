@@ -25,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -32,7 +33,9 @@ fun BookManageScreen(
     id: Int,
     onBackClick: () -> Unit
 ) {
-    val viewModel = koinViewModel<ManageViewModel>()
+    val viewModel = koinViewModel<BookManageViewModel>(
+        parameters = { parametersOf(id) }
+    )
     var imageField by viewModel.imageField
     var titleField by viewModel.titleField
     var summaryField by viewModel.summaryField

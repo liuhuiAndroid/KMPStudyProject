@@ -1,7 +1,6 @@
 package com.mvi.test.screen.book
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mvi.test.database.Book
@@ -10,17 +9,16 @@ import kotlinx.coroutines.launch
 
 const val IMAGE_URL = "https://r2.erweima.ai/imgcompressed/compressed_c29235854ffdfec1257c539ecfc35783.webp"
 
-class ManageViewModel(
-    private val database: BookDatabase,
-    savedStateHandle: SavedStateHandle
+class BookManageViewModel(
+    private val selectedBookId: Int,
+    private val database: BookDatabase
 ): ViewModel() {
-    private val selectedBookId = savedStateHandle.get<Int>(BOOK_ID_ARG) ?: -1
     var imageField = mutableStateOf(IMAGE_URL)
-    var titleField = mutableStateOf("")
-    var summaryField = mutableStateOf("")
-    var categoryField = mutableStateOf("")
-    var tagsField = mutableStateOf("")
-    var authorField = mutableStateOf("")
+    var titleField = mutableStateOf("The Art of War")
+    var summaryField = mutableStateOf("Summary")
+    var categoryField = mutableStateOf("Category")
+    var tagsField = mutableStateOf("Tags")
+    var authorField = mutableStateOf("author")
 
     init {
         viewModelScope.launch {

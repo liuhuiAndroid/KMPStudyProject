@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,16 +18,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.mvi.test.screen.auth.AuthScreen
-import com.mvi.test.heta.HetaScreen
-import com.mvi.test.screen.weather.WeatherScreen
-import androidx.compose.runtime.getValue
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import androidx.navigation.toRoute
+import com.mvi.test.heta.HetaScreen
+import com.mvi.test.screen.auth.AuthScreen
 import com.mvi.test.screen.book.BookDetailsScreen
 import com.mvi.test.screen.book.BookHomeScreen
 import com.mvi.test.screen.book.BookManageScreen
+import com.mvi.test.screen.weather.WeatherScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +94,7 @@ fun MainNavigation() {
                 )
             }
             composable<Screens.BookManageScreen> {
-                val args = it.toRoute<Screens.BookDetailsScreen>()
+                val args = it.toRoute<Screens.BookManageScreen>()
                 BookManageScreen(
                     id = args.id,
                     onBackClick = { navController.navigateUp() }
@@ -108,6 +106,7 @@ fun MainNavigation() {
             composable<Screens.BookDetailsScreen> {
                 val args = it.toRoute<Screens.BookDetailsScreen>()
                 BookDetailsScreen(
+                    id = args.id,
                     onEditClick = {
                         navController.navigate(Screens.BookManageScreen(args.id))
                     },

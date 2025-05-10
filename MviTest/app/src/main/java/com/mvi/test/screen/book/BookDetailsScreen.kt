@@ -38,14 +38,18 @@ import androidx.compose.ui.unit.dp
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.coil.CoilImage
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BookDetailsScreen(
+    id: Int,
     onEditClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
-    val viewModel = koinViewModel<BookDetailsViewModel>()
+    val viewModel = koinViewModel<BookDetailsViewModel>(
+        parameters = { parametersOf(id) }
+    )
     val selectedBook by viewModel.selectedBook
     val isFavorite by viewModel.isFavorite
 
