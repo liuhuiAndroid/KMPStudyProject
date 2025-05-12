@@ -24,6 +24,7 @@ import com.mvi.test.screen.auth.AuthScreen
 import com.mvi.test.screen.book.BookDetailsScreen
 import com.mvi.test.screen.book.BookHomeScreen
 import com.mvi.test.screen.book.BookManageScreen
+import com.mvi.test.screen.splash.SplashScreen
 import com.mvi.test.screen.weather.WeatherScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,12 +53,17 @@ fun MainNavigation() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screens.AuthScreen,
+            startDestination = Screens.SplashScreen,
             modifier = Modifier.padding(
                 top = paddingValues.calculateTopPadding(),
                 bottom = paddingValues.calculateBottomPadding()
             )
         ) {
+            composable<Screens.SplashScreen> {
+                SplashScreen {
+                    navController.navigate(Screens.AuthScreen)
+                }
+            }
             composable<Screens.AuthScreen> {
                 AuthScreen(
                     snackbarHostState, navigateToMainScreen = {

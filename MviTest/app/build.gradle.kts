@@ -68,7 +68,6 @@ dependencies {
     implementation(libs.orbit.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.ktor)
-    implementation(libs.permissions)
     implementation(libs.bundles.landscapist)
     implementation(libs.lottie.compose)
     implementation(libs.timber)
