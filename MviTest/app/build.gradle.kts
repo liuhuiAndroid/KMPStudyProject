@@ -70,7 +70,6 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.landscapist)
     implementation(libs.lottie.compose)
-    implementation(libs.timber)
     implementation(libs.mmkv)
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
