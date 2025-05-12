@@ -74,4 +74,5 @@ dependencies {
     implementation(libs.mmkv)
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
+    debugImplementation(libs.leakcanary)
 }
