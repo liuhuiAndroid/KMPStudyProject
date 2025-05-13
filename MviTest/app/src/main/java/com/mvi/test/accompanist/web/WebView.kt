@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mvi.test.web
+package com.mvi.test.accompanist.web
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -45,8 +45,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.mvi.test.web.LoadingState.Finished
-import com.mvi.test.web.LoadingState.Loading
+import com.mvi.test.accompanist.web.LoadingState.Finished
+import com.mvi.test.accompanist.web.LoadingState.Loading
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
