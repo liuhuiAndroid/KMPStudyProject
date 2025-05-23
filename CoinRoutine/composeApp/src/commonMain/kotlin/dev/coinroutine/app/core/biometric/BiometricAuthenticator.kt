@@ -3,6 +3,7 @@ package dev.coinroutine.app.core.biometric
 import androidx.compose.runtime.Composable
 
 interface PlatformContext
+
 @Composable
 expect fun getPlatformContext(): PlatformContext
 
@@ -13,5 +14,5 @@ interface BiometricAuthenticator {
 expect fun getBiometricAuthenticator(context: PlatformContext): BiometricAuthenticator
 
 enum class BiometricAuthNotAvailable {
-    BIOAUTH_NOT_AVAILABLE
+    BIO_AUTH_NOT_AVAILABLE
 }

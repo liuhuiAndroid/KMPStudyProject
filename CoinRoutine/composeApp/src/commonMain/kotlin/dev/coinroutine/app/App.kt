@@ -28,7 +28,7 @@ fun App() {
     CoinRoutineTheme {
         NavHost(
             navController = navController,
-            startDestination = Biometric,
+            startDestination = Portfolio,
             modifier = Modifier.fillMaxSize()
         ) {
             composable<Biometric> {
@@ -75,7 +75,6 @@ fun App() {
                     }
                 )
             }
-
         }
     }
 }

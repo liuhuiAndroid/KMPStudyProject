@@ -9,3 +9,4 @@ data class UiPortfolioCoinItem(
     val performancePercentText: String,
     val isPositive: Boolean,
 )
+

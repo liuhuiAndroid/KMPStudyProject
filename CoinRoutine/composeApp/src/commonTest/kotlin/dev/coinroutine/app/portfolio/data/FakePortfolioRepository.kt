@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
+/**
+ * UI 测试实现
+ */
 class FakePortfolioRepository : PortfolioRepository {
 
     private val _data = MutableStateFlow<Result<List<PortfolioCoinModel>, DataError.Remote>>(

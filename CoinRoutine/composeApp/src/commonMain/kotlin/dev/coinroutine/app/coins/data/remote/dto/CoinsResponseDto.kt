@@ -4,12 +4,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoinsResponseDto(
-    val data: CoinsListDto
+    val data: CoinsListDto,
 )
 
 @Serializable
 data class CoinsListDto(
-    val coins: List<CoinItemDto>
+    val coins: List<CoinItemDto>,
 )
 
 @Serializable

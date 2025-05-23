@@ -10,8 +10,8 @@ import dev.coinroutine.app.platform
 import org.jetbrains.compose.resources.vectorResource
 
 val BiometricIcon: ImageVector
-@Composable
-get() = when (platform) {
-    is Platform.Android -> vectorResource(Res.drawable.ic_fingerprint)
-    is Platform.Ios -> vectorResource(Res.drawable.ic_face_id)
-}
+    @Composable
+    get() = when (platform) {
+        is Platform.Android -> vectorResource(Res.drawable.ic_fingerprint)
+        is Platform.Ios -> vectorResource(Res.drawable.ic_face_id)
+    }

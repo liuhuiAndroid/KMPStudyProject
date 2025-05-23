@@ -42,9 +42,10 @@ fun BiometricScreen(
     val biometricAuthenticator = remember { getBiometricAuthenticator(platformContext) }
     val coroutineScope = rememberCoroutineScope()
     var authError by remember { mutableStateOf<String?>(null) }
-
     val infiniteTransition = rememberInfiniteTransition()
 
+    // 创建一个无限循环的缩放动画（从 1.0 到 1.05 来回缩放）
+    // 应用到图标上，实现 "脉动效果"
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 1.05f,
@@ -89,15 +90,14 @@ fun BiometricScreen(
                 onClick = {
                     coroutineScope.launch {
                         try {
-//                            val authenticated = biometricAuthenticator.authenticate()
-//                            authError = null
-//                            if (authenticated) {
-//                                onSuccess()
-//                            }
-                            onSuccess()
+                            val authenticated = biometricAuthenticator.authenticate()
+                            authError = null
+                            if (authenticated) {
+                                onSuccess()
+                            }
                         } catch (e: Exception) {
                             authError = e.message
-                            if (e.message == BiometricAuthNotAvailable.BIOAUTH_NOT_AVAILABLE.toString()) {
+                            if (e.message == BiometricAuthNotAvailable.BIO_AUTH_NOT_AVAILABLE.toString()) {
                                 authError = "Biometric is not available on your device!"
                             }
                         }

@@ -10,10 +10,11 @@ import dev.coinroutine.app.core.network.safeCall
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
+// https://coinranking.com/
 private const val BASE_URL = "https://api.coinranking.com/v2"
 
 class KtorCoinsRemoteDataSource(
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
 ) : CoinsRemoteDataSource {
 
     override suspend fun getListOfCoins(): Result<CoinsResponseDto, DataError.Remote> {

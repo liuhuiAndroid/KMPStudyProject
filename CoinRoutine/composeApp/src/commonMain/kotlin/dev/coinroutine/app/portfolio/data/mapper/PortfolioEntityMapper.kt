@@ -5,9 +5,7 @@ import dev.coinroutine.app.portfolio.data.local.PortfolioCoinEntity
 import dev.coinroutine.app.portfolio.domain.PortfolioCoinModel
 import kotlinx.datetime.Clock
 
-fun PortfolioCoinEntity.toPortfolioCoinModel(
-    currentPrice: Double,
-): PortfolioCoinModel {
+fun PortfolioCoinEntity.toPortfolioCoinModel(currentPrice: Double): PortfolioCoinModel {
     return PortfolioCoinModel(
         coin = Coin(
             id = coinId,

@@ -54,7 +54,8 @@ class PortfolioRepositoryImpl(
                         .onSuccess { coinsDto ->
                             val portfolioCoins =
                                 portfolioCoinEntities.mapNotNull { portfolioCoinEntity ->
-                                    val coin = coinsDto.data.coins.find { it.uuid == portfolioCoinEntity.coinId }
+                                    val coin =
+                                        coinsDto.data.coins.find { it.uuid == portfolioCoinEntity.coinId }
                                     coin?.let {
                                         portfolioCoinEntity.toPortfolioCoinModel(it.price)
                                     }
@@ -111,7 +112,9 @@ class PortfolioRepositoryImpl(
                         emit(Result.Error(error))
                     }.onSuccess { coinsDto ->
                         val totalValue = portfolioCoinsEntities.sumOf { ownedCoin ->
-                            val coinPrice = coinsDto.data.coins.find { it.uuid == ownedCoin.coinId }?.price ?: 0.0
+                            val coinPrice =
+                                coinsDto.data.coins.find { it.uuid == ownedCoin.coinId }?.price
+                                    ?: 0.0
                             ownedCoin.amountOwned * coinPrice
                         }
                         emit(Result.Success(totalValue))
@@ -138,6 +141,7 @@ class PortfolioRepositoryImpl(
                 is Result.Success -> {
                     Result.Success(cashBalance + portfolioResult.data)
                 }
+
                 is Result.Error -> {
                     Result.Error(portfolioResult.error)
                 }

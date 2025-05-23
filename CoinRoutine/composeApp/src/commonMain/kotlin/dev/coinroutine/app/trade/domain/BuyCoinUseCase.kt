@@ -8,9 +8,7 @@ import dev.coinroutine.app.portfolio.domain.PortfolioCoinModel
 import dev.coinroutine.app.portfolio.domain.PortfolioRepository
 import kotlinx.coroutines.flow.first
 
-class BuyCoinUseCase(
-    private val portfolioRepository: PortfolioRepository,
-) {
+class BuyCoinUseCase(private val portfolioRepository: PortfolioRepository) {
 
     suspend fun buyCoin(
         coin: Coin,
