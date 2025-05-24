@@ -27,7 +27,6 @@ private class CurrencyVisualTransformation: VisualTransformation {
             AnnotatedString(formattedText),
             CurrencyOffsetMapping(originalText, formattedText)
         )
-
     }
 }
 

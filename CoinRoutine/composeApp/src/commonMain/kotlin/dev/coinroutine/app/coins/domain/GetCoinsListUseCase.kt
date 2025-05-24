@@ -10,7 +10,6 @@ import dev.coinroutine.app.core.domain.map
 class GetCoinsListUseCase(
     private val client: CoinsRemoteDataSource,
 ) {
-
     suspend fun execute(): Result<List<CoinModel>, DataError.Remote> {
         return client.getListOfCoins().map { dto ->
             dto.data.coins.map { it.toCoinModel() }

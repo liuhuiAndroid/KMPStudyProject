@@ -17,7 +17,7 @@ class SellCoinUseCase(
         price: Double,
     ): EmptyResult<DataError> {
         val sellAllThreshold = 1
-        when(val existingCoinResponse = portfolioRepository.getPortfolioCoin(coin.id)) {
+        when (val existingCoinResponse = portfolioRepository.getPortfolioCoin(coin.id)) {
             is Result.Success -> {
                 val existingCoin = existingCoinResponse.data
                 val sellAmountInUnit = amountInFiat / price
@@ -41,6 +41,7 @@ class SellCoinUseCase(
                 portfolioRepository.updateCashBalance(balance + amountInFiat)
                 return Result.Success(Unit)
             }
+
             is Result.Error -> {
                 return existingCoinResponse
             }

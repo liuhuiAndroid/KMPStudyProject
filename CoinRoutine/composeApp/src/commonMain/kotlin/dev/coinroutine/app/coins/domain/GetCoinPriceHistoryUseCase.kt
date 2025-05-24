@@ -10,7 +10,6 @@ import dev.coinroutine.app.core.domain.map
 class GetCoinPriceHistoryUseCase(
     private val client: CoinsRemoteDataSource,
 ) {
-
     suspend fun execute(coinId: String): Result<List<PriceModel>, DataError.Remote> {
         return client.getPriceHistory(coinId).map { dto ->
             dto.data.history.map { it.toPriceModel() }

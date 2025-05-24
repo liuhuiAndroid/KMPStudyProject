@@ -6,7 +6,6 @@ class CurrencyOffsetMapping(originalText: String, formattedText: String) : Offse
     private val originalLength = originalText.length
     private val indexes = findDigitIndexes(originalText, formattedText)
 
-
     private fun findDigitIndexes(firstString: String, secondString: String): List<Int> {
         val digitIndexes = mutableListOf<Int>()
         var currentIndex = 0

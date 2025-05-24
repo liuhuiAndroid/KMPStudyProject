@@ -64,6 +64,7 @@ fun App() {
                     }
                 )
             }
+
             composable<Sell> { navBackStackEntry ->
                 val coinId: String = navBackStackEntry.toRoute<Sell>().coinId
                 SellScreen(
